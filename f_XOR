@@ -1,0 +1,24 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    10:21:56 12/06/2019 
+-- Design Name:   BORON
+-- Module Name:    fegzor - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity fegzor is
+	port(ein  : in  std_logic_vector (63 downto 0);
+	     eout : out std_logic_vector (63 downto 0));
+end fegzor;
+
+architecture Behavioral of fegzor is
+
+begin
+	eout(15 downto 0)  <= ein(15 downto 0)  xor ein(31 downto 16) xor ein(63 downto 48);
+	eout(31 downto 16) <= ein(31 downto 16) xor ein(63 downto 48);
+	eout(47 downto 32) <= ein(15 downto 0)  xor ein(47 downto 32);
+	eout(63 downto 48) <= ein(15 downto 0)  xor ein(47 downto 32) xor ein(63 downto 48);
+
+end Behavioral;
