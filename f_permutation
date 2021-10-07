@@ -1,0 +1,32 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    10:21:32 12/06/2019 
+-- Design Name:     BORON
+-- Module Name:    fprm_rnd - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity fprm_rnd is
+port(pin  : in  std_logic_vector (63 downto 0);
+	 pout : out std_logic_vector (63 downto 0));
+end fprm_rnd;
+
+architecture Behavioral of fprm_rnd is
+
+begin
+
+	pout(15 downto 1)  <= pin(14 downto 0);
+	pout(0)            <= pin(15);	
+	
+	pout(31 downto 20) <= pin(27 downto 16);
+	pout(19 downto 16) <= pin(31 downto 28);
+	
+	pout(47 downto 39) <= pin(40 downto 32);
+	pout(38 downto 32) <= pin(47 downto 41);
+	
+	pout(63 downto 57) <= pin(54 downto 48);
+	pout(56 downto 48) <= pin(63 downto 55);	
+
+end Behavioral;
