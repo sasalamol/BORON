@@ -1,0 +1,41 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+-- 
+-- Create Date:    10:20:12 12/06/2019 
+-- Design Name: 	BORON
+-- Module Name:    fsbox - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+entity fsbox is
+	port( bin  : in std_logic_vector (3 downto 0);
+		  bout : out std_logic_vector (3 downto 0));
+end fsbox;
+
+architecture Behavioral of fsbox is
+signal X,Sx : std_logic_vector (3 downto 0);
+
+begin
+  Sx <= bin;
+
+	   X <=  x"E" when Sx = x"0" else
+			 x"4" when Sx = x"1" else
+			 x"B" when Sx = x"2" else
+			 x"1" when Sx = x"3" else
+			 x"7" when Sx = x"4" else
+			 x"9" when Sx = x"5" else
+			 x"C" when Sx = x"6" else
+			 x"A" when Sx = x"7" else
+			 x"D" when Sx = x"8" else
+			 x"2" when Sx = x"9" else
+			 x"0" when Sx = x"A" else
+		     x"F" when Sx = x"B" else
+		     x"8" when Sx = x"C" else
+			 x"5" when Sx = x"D" else
+			 x"3" when Sx = x"E" else
+			 x"6" when Sx = x"F";
+
+  bout <= X;
+end Behavioral;
+
