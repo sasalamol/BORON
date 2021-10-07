@@ -1,0 +1,56 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+-- 
+-- Create Date:    09:59:36 12/06/2019 
+-- Design Name: 	BORON
+-- Module Name:    control - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+ USE ieee.std_logic_1164.all;
+ USE ieee.std_logic_arith.all;
+ USE ieee.std_logic_unsigned.all;
+
+entity control is
+ port(Estart : in std_logic;
+	  Dstart : in std_logic;
+	  clk : in std_logic;
+	  Masterkey : in  std_logic_vector(79 downto 0);
+	  Plaintext : in  std_logic_vector(63 downto 0);
+	  plainout  : out std_logic_vector(63 downto 0));
+end control;
+
+architecture Behavioral of control is
+
+	component main_dec_smh
+	generic(n : integer := 63);
+	port(clk       : in  std_logic;
+		 snq       : in  std_logic_vector (4 downto 0);
+		 Key26     : in  std_logic_vector (79 downto 0);
+		 cipher    : in  std_logic_vector (63 downto 0);
+		 plain     : out std_logic_vector (63 downto 0));
+	end component;
+		component main_enc_smh
+		generic(n : integer := 63);
+		port(clk       : in  std_logic;
+			 Master    : in  std_logic_vector (79 downto 0);
+			 plain     : in  std_logic_vector (63 downto 0);
+			 tnq       : out std_logic_vector (4 downto 0);
+			 qey       : out std_logic_vector (79 downto 0);
+			 cipher    : out std_logic_vector (63 downto 0));
+		end component;
+		
+	signal ckey : std_logic_vector(79 downto 0);
+	signal cip  : std_logic_vector(63 downto 0);
+	signal tt   : std_logic := '0';
+	signal pnq  : std_logic_vector(4 downto 0);
+begin
+
+
+
+	ENC : main_enc_smh port map (clk,Masterkey,Plaintext,pnq,ckey,cip);
+	
+	tt <= clk ;--after 255 ns;
+	DEC : main_dec_smh port map (tt,pnq,ckey,cip,plainout);
+
+end Behavioral;
+
