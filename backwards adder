@@ -1,0 +1,26 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+-- 
+-- Create Date:    10:19:06 12/06/2019 
+-- Design Name:   BORON
+-- Module Name:    badd - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity badd is
+generic (n : integer := 63);
+port(bin1 : in  std_logic_vector (n downto 0);
+	 bin2 : in  std_logic_vector (n downto 0);
+	 bout : out std_logic_vector (n downto 0));
+end badd;
+
+architecture Behavioral of badd is
+	signal a : std_logic_vector (n downto 0);
+begin
+
+ a <= bin1 xor bin2; 
+ bout <= a;
+ 
+end Behavioral;
+
