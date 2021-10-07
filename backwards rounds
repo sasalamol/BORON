@@ -1,0 +1,55 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    14:12:24 12/05/2019 
+-- Design Name:   BORON
+-- Module Name:    rndback - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity rndback is
+	port(Btxt : in std_logic_vector (63 downto 0);
+		 Bkey : in std_logic_vector (63 downto 0);
+		 Bre : out std_logic_vector (63 downto 0));
+end rndback;
+
+architecture Behavioral of rndback is
+	component badd
+	generic(n : integer := 63);
+	port(bin1 : in  std_logic_vector (n downto 0);
+		 bin2 : in  std_logic_vector (n downto 0);
+		 bout : out std_logic_vector (n downto 0));
+		end component;
+			component bsbox
+			port( bin  : in std_logic_vector (3 downto 0);
+				  bout : out std_logic_vector (3 downto 0));
+		        end component;		
+				component bshuf_blck
+				port(sin  : in  std_logic_vector (63 downto 0);
+					 sout : out std_logic_vector (63 downto 0));
+					end component;	
+					component bprm_rnd
+					port(pin  : in  std_logic_vector (63 downto 0);
+						 Pout : out std_logic_vector (63 downto 0));
+						end component;
+						component bgzor
+						port(ein  : in  std_logic_vector (63 downto 0);
+							 eout : out std_logic_vector (63 downto 0));
+							end component;				
+							
+	signal b1,b2,b3,b4,b5 : std_logic_vector(63 downto 0);
+	begin
+	
+	BB1: bgzor     port map (Btxt,b1);
+	BB2: bprm_rnd   port map (b1,b2);
+	BB3: bshuf_blck port map (b2,b3);
+	 gen1: for i in 0 to 15 generate
+	BB4: bsbox port map (b3(4*i+3 downto 4*i),b4(4*i+3 downto 4*i)); 
+	 end generate;	
+	BB5: badd  port map (b4,Bkey,b5);			
+	 Bre <= b5;
+
+	end Behavioral;
+	
+	
