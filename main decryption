@@ -1,0 +1,88 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    16:14:06 12/05/2019 
+-- Design Name:   BORON
+-- Module Name:    main_dec_smh - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+ USE ieee.std_logic_1164.all;
+ USE ieee.std_logic_arith.all;
+ USE ieee.std_logic_unsigned.all;
+ 
+
+
+entity main_dec_smh is
+	generic(n : integer := 63);
+	port(clk       : in std_logic;
+		 snq       : in  std_logic_vector (4 downto 0);
+		 Key26     : in  std_logic_vector (79 downto 0);
+		 cipher    : in  std_logic_vector (63 downto 0);
+		 plain     : out std_logic_vector (63 downto 0));
+end main_dec_smh;
+
+architecture Behavioral of main_dec_smh is
+	component kback2
+	--generic(n : integer := 63);
+	port(clk   : in  std_logic;
+		 snq1   : in  std_logic_vector (4 downto 0);
+		 fink  : in  std_logic_vector (79 downto 0);
+		 keyo  : out std_logic_vector (79 downto 0));
+	end component;
+		component rndback
+		port(Btxt : in std_logic_vector (63 downto 0);
+			 Bkey : in std_logic_vector (63 downto 0);
+			 Bre : out std_logic_vector (63 downto 0));
+		end component;	 
+			component badd
+			generic(n : integer := 63);
+			port(bin1 : in  std_logic_vector (n downto 0);
+				 bin2 : in  std_logic_vector (n downto 0);
+				 bout : out std_logic_vector (n downto 0));
+			end component;		
+		 
+		signal key_26  : std_logic_vector (79 downto 0);
+		signal btxti,btxto,bo : std_logic_vector (63 downto 0);
+		signal w	      : std_logic_vector (4  downto 0) := "00000";
+		signal keyBS : std_logic_vector (63 downto 0);
+		signal keyBR : std_logic_vector (79 downto 0);
+begin
+
+
+ key_26 <= Key26;
+ 
+		AD    : badd     port map (cipher,key26(63 downto 0),bo);
+		
+		process (snq,clk,w)
+		begin
+		 if(snq = "11010")then
+			if (clk'event and clk ='1')then 
+			 keyBS <= keyBR(63 downto 0);
+				if(w = "00000")then
+				keyBS <= keyBR(63 downto 0);
+				   btxti <= bo;
+				   w <= w + 1;
+				end if;
+			if(w < "11010" and w > "00000")then
+			   btxti <= btxto ;
+			   w <= w + 1;
+				 if(w = "11010")then
+				 w <= "00000";
+				  --plain <= btxto;
+				  
+				 end if;
+			 end if;	
+			
+			end if;
+			end if;
+		end process;
+		
+			KEY   : kback2	port map (clk,snq,key_26,keyBR);
+			
+			ROND  : rndback   port map (btxti,keyBS,btxto);
+			
+			plain <= btxto;
+			
+			
+
+end Behavioral;
