@@ -1,0 +1,60 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    10:45:01 12/05/2019 
+-- Design Name:   BORON
+-- Module Name:    funky - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity funky is
+port(cnt    : in std_logic_vector(4 downto 0);
+	 inkey  : in  std_logic_vector(79 downto 0);
+	 outkey : out std_logic_vector(79 downto 0));
+end funky;
+
+architecture Behavioral of funky is
+signal rci : std_logic_vector(4 downto 0); -- round counter input
+signal sz  : std_logic_vector(4 downto 0);
+signal sy  : std_logic_vector(3 downto 0);
+signal sx  : std_logic_vector(79 downto 0);
+signal sw  : std_logic_vector(79 downto 0);
+begin
+	rci <= cnt;
+	sz <= inkey(63 downto 59) xor rci;					-- XOR
+	sy <=  x"0" when inkey(3 downto 0) = x"E" else		-- SBOX
+		   x"1" when inkey(3 downto 0) = x"4" else
+		   x"2" when inkey(3 downto 0) = x"B" else
+		   x"3" when inkey(3 downto 0) = x"1" else
+		   x"4" when inkey(3 downto 0) = x"7" else
+		   x"5" when inkey(3 downto 0) = x"9" else
+		   x"6" when inkey(3 downto 0) = x"C" else
+		   x"7" when inkey(3 downto 0) = x"A" else        
+		   x"8" when inkey(3 downto 0) = x"D" else
+		   x"9" when inkey(3 downto 0) = x"2" else
+		   x"A" when inkey(3 downto 0) = x"0" else
+		   x"B" when inkey(3 downto 0) = x"F" else
+		   x"C" when inkey(3 downto 0) = x"8" else
+		   x"D" when inkey(3 downto 0) = x"5" else
+		   x"E" when inkey(3 downto 0) = x"3" else
+		   x"F" when inkey(3 downto 0) = x"6";
+	sx(63 downto 59) <= sz;                       		--FILL UP
+	sx(3 downto 0)   <= sy;
+	sx(79 downto 64) <= inkey(79 downto 64);
+	sx(58 downto 4)  <= inkey(58 downto 4);
+	sw(79 downto 67) <= sx(12 downto 0);           		--13-BIT SHIFT 
+	sw(66 downto 0) <= sx(79 downto 13);
+	outkey <= sw;
+		   
+end Behavioral;
+
