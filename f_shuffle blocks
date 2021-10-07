@@ -1,0 +1,41 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    10:20:59 12/06/2019 
+-- Design Name:   BORON
+-- Module Name:    fshuf_blck - Behavioral 
+----------------------------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity fshuf_blck is
+	port(sin  : in  std_logic_vector (63 downto 0);
+	     sout : out std_logic_vector (63 downto 0));
+end fshuf_blck;
+
+architecture Behavioral of fshuf_blck is
+
+begin
+
+		sout(11 downto 8)  <= sin(3 downto 0); 
+		sout(15 downto 12) <= sin(7 downto 4);
+		sout(3 downto 0)   <= sin(11 downto 8); 
+		sout(7 downto 4)   <= sin(15 downto 12);
+		
+		sout(27 downto 24) <= sin(19 downto 16); 
+		sout(31 downto 28) <= sin(23 downto 20);
+		sout(19 downto 16) <= sin(27 downto 24); 
+		sout(23 downto 20) <= sin(31 downto 28);
+		
+		sout(43 downto 40) <= sin(35 downto 32); 
+		sout(47 downto 44) <= sin(39 downto 36);
+		sout(35 downto 32) <= sin(43 downto 40); 
+		sout(39 downto 36) <= sin(47 downto 44);
+		
+		sout(59 downto 56) <= sin(51 downto 48); 
+		sout(63 downto 60) <= sin(55 downto 52);
+		sout(51 downto 48) <= sin(59 downto 56); 
+		sout(55 downto 52) <= sin(63 downto 60);		
+		
+end Behavioral;
