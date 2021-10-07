@@ -1,0 +1,58 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+-- 
+-- Create Date:    10:43:51 12/05/2019 
+-- Design Name:   BORON
+-- Module Name:    kback2 - Behavioral 
+----------------------------------------------------------------------------------
+ library IEEE;
+ USE ieee.std_logic_1164.all;
+ USE ieee.std_logic_arith.all;
+ USE ieee.std_logic_unsigned.all;
+ 
+
+entity kback2 is
+port(clk   : in  std_logic;
+	 snq1  : in  std_logic_vector (4 downto 0);
+	 fink  : in  std_logic_vector (79 downto 0);
+	 keyo  : out std_logic_vector (79 downto 0));
+end kback2;
+
+architecture Behavioral of kback2 is
+	component funky
+		port(cnt : in std_logic_vector (4 downto 0);
+			 inkey    : in std_logic_vector (79 downto 0);
+			 outkey    : out std_logic_vector (79 downto 0));
+	end component;
+		signal outk,kfin : std_logic_vector (79 downto 0);
+		signal q         : std_logic_vector (4 downto 0) :="11001";
+		signal cnt       : std_logic_vector (4 downto 0);
+begin
+
+	process(snq1,clk,q)
+	begin
+	if(snq1 = "11010")then
+	if(clk'event and clk ='1')then
+	cnt <= q - 1;
+		if(q = "11001")then
+		kfin <= fink;
+		q <= q - 1;
+		end if;
+		if(q < "11001" and q > "00001")then
+		q <= q - 1;
+		kfin <= outk;
+			elsif(q = "00001")then
+			  q <= "00000";
+			  kfin <= outk;
+			
+		end if;
+
+	end if;	
+	end if;
+	end process;
+
+
+	test: funky port map (cnt,kfin,outk);
+	keyo <= outk;
+	
+end Behavioral;
