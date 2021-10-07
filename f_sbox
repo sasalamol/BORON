@@ -30,8 +30,8 @@ begin
 			 x"D" when Sx = x"8" else
 			 x"2" when Sx = x"9" else
 			 x"0" when Sx = x"A" else
-		     x"F" when Sx = x"B" else
-		     x"8" when Sx = x"C" else
+		    	 x"F" when Sx = x"B" else
+		  	 x"8" when Sx = x"C" else
 			 x"5" when Sx = x"D" else
 			 x"3" when Sx = x"E" else
 			 x"6" when Sx = x"F";
