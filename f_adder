@@ -1,0 +1,25 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+-- 
+-- Create Date:    15:37:06 11/28/2019 
+-- Design Name: 	BORON
+-- Module Name:    add - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity fadd is
+generic (n : integer := 63);
+port(ain1 : in  std_logic_vector (n downto 0);
+	 ain2 : in  std_logic_vector (n downto 0);
+	 aout : out std_logic_vector (n downto 0));
+end fadd;
+
+architecture Behavioral of fadd is
+	signal a : std_logic_vector (n downto 0);
+begin
+
+ a <= ain1 xor ain2; 
+ aout <= a;
+ 
+end Behavioral;
