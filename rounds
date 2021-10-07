@@ -1,0 +1,54 @@
+----------------------------------------------------------------------------------
+-- Author: Semih Aslan SAGLAMOL
+
+-- Create Date:    15:36:20 11/28/2019 
+-- Design Name: 	BORON
+-- Module Name:    round - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity round is
+	port(txt : in std_logic_vector (63 downto 0);
+		 key : in std_logic_vector (63 downto 0);
+		 pre : out std_logic_vector (63 downto 0));
+end round;
+
+architecture Behavioral of round is
+	component fadd
+	generic(n : integer := 63);
+	port(ain1 : in  std_logic_vector (n downto 0);
+		 ain2 : in  std_logic_vector (n downto 0);
+		 aout : out std_logic_vector (n downto 0));
+		end component;
+			component fsbox
+			port( bin  : in std_logic_vector (3 downto 0);
+				  bout : out std_logic_vector (3 downto 0));
+		        end component;		
+				component fshuf_blck
+				port(sin  : in  std_logic_vector (63 downto 0);
+					 sout : out std_logic_vector (63 downto 0));
+					end component;	
+					component fprm_rnd
+					port(pin  : in  std_logic_vector (63 downto 0);
+						 Pout : out std_logic_vector (63 downto 0));
+						end component;
+						component fegzor
+						port(ein  : in  std_logic_vector (63 downto 0);
+							 eout : out std_logic_vector (63 downto 0));
+							end component;				
+							
+	signal st1,st2,st3,st4,st5 : std_logic_vector(63 downto 0);
+	begin
+	
+			R1: fadd  port map (txt,key,st1);
+			 gen1: for i in 0 to 15 generate
+			R2: fsbox port map (st1(4*i+3 downto 4*i),st2(4*i+3 downto 4*i)); 
+			 end generate;					
+			R3: fshuf_blck port map (st2,st3);
+			R4: fprm_rnd   port map (st3,st4);
+			R5: fegzor     port map (st4,st5);
+			
+			  pre <= st5;
+
+	end Behavioral;
